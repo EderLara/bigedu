@@ -1,4 +1,4 @@
-# SPENDS APP
+# PROYECTO BIGEDU
 
 _Es una aplicacion para uso personal, con esta aplicación se puede llevar un control de ingresos y gastos_
 
