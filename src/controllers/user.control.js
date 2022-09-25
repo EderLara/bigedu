@@ -53,7 +53,8 @@ function saveUser(req, res){
                             { DatosUser: {EmaiUser: usuario.DatosUser.EmaiUser}},
                             { DatosUser: {IdenUser: usuario.DatosUser.IdenUser}}
                          ]}).exec((err, users) =>{
-                            if (err) return res.status(500).send({ mensaje: mensajes.m500 });
+                            if(err) throw err;
+                           // if (err) return res.status(500).send({ mensaje: mensajes.m500 });
                             if (users && users.length >= 1){
                                 return res.status(200).send({
                                     mensaje: 'El usuario que intenta agregar ya existe'
@@ -66,7 +67,8 @@ function saveUser(req, res){
                                     usuario.EstaUser = 'Activo';
 
                                     usuario.save((err, nuevoUser)=>{
-                                        if (err) return res.status(500).send({ mensaje: mensajes.m500 })
+                                        if(err) throw err;
+                                        //if (err) return res.status(500).send({ mensaje: mensajes.m500 })
                                         if (nuevoUser) {
                                             return res.status(200).send({ usuario: nuevoUser })
                                         } else {
@@ -148,14 +150,18 @@ function loginUser(req, res){
     let params = req.body;
     let nickname = params.nickname;
     let passuser = params.passuser;
+    console.log(params);
 
     // Query para login:
     User.findOne({NickName: nickname}, (err, user)=>{
+        console.log(user);
         if (err) throw err;
         if (user){
             // Encripto el pass del formulario:
             bcrypt.compare(passuser, user.PassUser, (err, ok)=>{
+                console.log(ok);
                 if (err) throw err;
+                
                 if (ok){
                     // Validación de parametro token:
                     if (params.getToken) {      
