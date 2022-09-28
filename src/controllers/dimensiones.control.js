@@ -39,6 +39,22 @@ function saveTipoUser(req, res){
                 });
 }
 
+function savePrograma(req, res) {
+
+}
+
+function saveDocumento(req, res) {
+
+}
+
+function saveInstitucion(req, res) {
+    
+}
+
+function savePeriodo(req, res) {
+    
+}
+
 module.exports = {
     saveTipoUser,
 }

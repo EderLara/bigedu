@@ -14,7 +14,8 @@ const PeriodoSchema = Schema({
     año_lectivo: String,
     fecha_inicio : { type : Date },
     fecha_fin : { type : Date },
-    creado_el: { type : Date, default: Date.now }
+    estado : { type : Boolean, default : true },
+    creado_el: { type : Date, default : Date.now }
 })
 
 module.exports = mongoose.model('Periodo', PeriodoSchema);
