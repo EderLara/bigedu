@@ -35,7 +35,7 @@ function saveUser(req, res){
     let usuario = new User();
 
     // Validacion de campos obligatorios:
-    if (params.nickname && params.tipouser && params.idenuser && params.primenom && params.primeape) {
+    if (params.nickname && params.passuser && params.tipouser && params.idenuser && params.primenom && params.primeape) {
         // Capturamos los datos del formulario:
         usuario.NickName = params.nickname;
         usuario.TipoUser = params.tipouser;
@@ -43,9 +43,8 @@ function saveUser(req, res){
         usuario.DatosUser.NombUser = params.nombuser;
         usuario.DatosUser.ApelUser = params.apeluser;
         usuario.DatosUser.EmaiUser = params.emaiuser;
-        usuario.DatosUser.ProgUser = params.proguser;
-
-        console.log(params);
+        usuario.DatosUser.TeleUser = params.teleuser;
+        usuario.DatosUser.ProfUser = params.profuser;
 
         // Validamos duplicidad de usuario:
         User.find({ $or: [
@@ -59,7 +58,7 @@ function saveUser(req, res){
                                     mensaje: 'El usuario que intenta agregar ya existe'
                                 })
                             }else{
-                                // Encriptamos, y procedemos a guardar
+                                // Encriptamos la contraseña, y procedemos a guardar
                                 bcrypt.hash(params.passuser, null, null, (err, hash)=>{
                                     usuario.PassUser = hash;
                                     // Asignamos a el ultimo campo:
