@@ -88,6 +88,7 @@ function delUser(req, res){
 
     // Seguridad para no eliminar el campo password:
     delete update.PassUser;
+    update.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
     User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
