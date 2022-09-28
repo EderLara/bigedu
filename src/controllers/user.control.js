@@ -83,15 +83,14 @@ function saveUser(req, res){
 // Funcion Activar e inactivar usuario:
 function delUser(req, res){
 
-    let usuario = req.params.idusuario;
-    let update = req.body;
-
+    let user = req.params.idusuario;
+    let usuario = new User();
+    
     // Seguridad para no eliminar el campo password:
-    delete update.PassUser;
-    update.EstaUser = 'Inactivo';
+    usuario.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
+    User.findByIdAndUpdate(user, usuario, {new: true}, (err, userUpdated)=>{
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
