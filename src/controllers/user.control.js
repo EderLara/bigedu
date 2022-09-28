@@ -18,7 +18,8 @@ const { mensajes } = require('../util/estados')
 const momento = require('moment')
 
 // Servicio de autenticación:
-const jwt = require('../services/jwt')
+const jwt = require('../services/jwt');
+const { async } = require('rxjs');
 
 /* ---------------------------------------------------- TEST ---------------------------------------------------- */
 function testControlUser (req, res){
@@ -83,28 +84,40 @@ function saveUser(req, res){
     }
 }
 
-// Funcion Activar e inactivar usuario:
+//Funcion Activar e inactivar usuario:
 function delUser(req, res){
-
+     
+    //let deluser = new User();
     let usuario = req.params.idusuario;
-    let update = req.body;
+    let update = req.params.EstaUser;
 
-    // Seguridad para no eliminar el campo password:
-    delete update.PassUser;
+    // (()=>{
+    //    let usuario = new User();
+    //    usuario.EstaUser = "No activo";
+    // })();
+
+
+     // Seguridad para no eliminar el campo password:
+     delete update.PassUser;
+     
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
+    User.findByIdAndUpdate(usuario,update,{new: true}, (err, userUpdated)=>{
+        //delUser.EstaUser = 'Inactivo';
+        
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
         // Si todo sale bien:
         return res.status(200).send({ Usuario: userUpdated })
-    });
+        });//no modifica en el documento en mongodb: tipo de usuario
 }
+
+
 
 // Funcion buscar Usuario:
 function findUser(req, res){
-    let usuario = req.params.usuario
+    let usuario = req.params.idusuario;//linea modificada por aitageo
 
     User.findById(usuario, (err, userFound)=>{
         if (err) throw err;
@@ -130,12 +143,15 @@ function changeRol(req, res){
 
     let usuario = req.params.usuarioid;
     let update = req.body;
+    console.log(update);
+    console.log("el body");
 
     // Seguridad para no eliminar el campo password:
     delete update.PassUser;
 
     // Query para buscar y actualizar:
     User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
+        console.log(`el objeto actualizado ${userUpdated}`);
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
@@ -159,7 +175,7 @@ function loginUser(req, res){
         if (user){
             // Encripto el pass del formulario:
             bcrypt.compare(passuser, user.PassUser, (err, ok)=>{
-                console.log(ok);
+                //console.log(ok);
                 if (err) throw err;
                 
                 if (ok){
