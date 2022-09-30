@@ -13,6 +13,7 @@ const Schema = mongoose.Schema;
 
 const TipoUsuarioSchema = Schema({
     nombre_tipoUsuario: String,
+    //EstaUser:String,
     creado_el: { type : Date, default: Date.now }
 })
 

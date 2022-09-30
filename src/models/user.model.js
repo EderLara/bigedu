@@ -13,7 +13,8 @@ const Schema = mongoose.Schema;
 const UsuarioSchema = Schema({
     NickName : String,                                              // Correo Electrónico de ingreso de usuario
     PassUser : String,                                              // Password del usuario
-    EstaUser : String,                                              // Estado del Usuario
+    EstaUser : String,
+    image    : String,                                             // Estado del Usuario
     TipoUser : { type : Schema.ObjectId, ref: 'TipoUsuario' },      // Tipo de Usuario
     Es_Lider : { type : Boolean, default: false },                  // Lider de programa
     DatosUser : {
@@ -23,7 +24,7 @@ const UsuarioSchema = Schema({
         EmaiUser : String,                                          // Correo Electrónico personal del usuario 
         TeleUser : String,                                          // Teléfono del usuario
         ImgeUser : String,                                          // Imagen de perfil de usuario,
-        ProfUser : String                                           // Profesión de Usuario
+        ProfUser : String                                          // Profesión de Usuario
     },
     creado_el: { type : Date, default: Date.now }                   // Creado el..
 })

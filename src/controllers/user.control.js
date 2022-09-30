@@ -90,11 +90,12 @@ function delUser(req, res){
     let usuario = new User();
     
     // Seguridad para no eliminar el campo password:
-    usuario.EstaUser = 'Inactivo';
+   // usuario.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
     User.findByIdAndUpdate(user, usuario, {new: true}, (err, userUpdated)=>{
         if (err) throw err;
+        console.error(err);
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
         // Si todo sale bien:
@@ -130,17 +131,15 @@ function listUsers(req, res){
 // Funcion AsignarRol:
 function changeRol(req, res){
 
-    let usuario = req.params.usuarioid;
+    let usuarioid = req.params.idusuario;
     let update = req.body;
     console.log(update);
-    console.log("el body");
-
+    
     // Seguridad para no eliminar el campo password:
     delete update.PassUser;
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
-        console.log(`el objeto actualizado ${userUpdated}`);
+    User.findByIdAndUpdate(usuarioid,update, {new: true}, (err, userUpdated)=>{
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
@@ -185,6 +184,45 @@ function loginUser(req, res){
     })
 }
 
+function UploadImage(req, res){
+    let UserId = req.params.id;
+    let fileName = 'No se ha cargado la imagen';
+
+    if(req.files){
+        let filePath = req.files.image.path;
+        let fileSplit = filePath.split('\\');
+        let fileName = fileSplit[4];
+        let  extSplit = fileName.split('\.');
+        let  fileExt = extSplit[1];
+    
+           if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
+
+            User.findByIdAndUpdate(UserId, {image: fileName}, {new: true}, (err, userUpdated) => {
+                if(err) return res.status(500).send({mensaje: mensajes.m402});
+
+                if(!userUpdated) return res.status(404).send({mensaje:mensajes.m404});
+
+                return res.status(200).send({
+                    user: userUpdated
+                });
+            });
+
+        }else{
+            fs.unlink(filePath, (err) => {
+                if(err) throw err;
+                return res.status(200).send({mensaje:mensajes.m502});
+            });
+        }
+
+    }else{
+        return res.status(200).send({
+            message: fileName
+        });
+    }
+
+}
+
+
 module.exports = {
     testControlUser,
     saveUser,               // RF1
@@ -192,5 +230,6 @@ module.exports = {
     findUser,               // RF4
     listUsers,              // RF4
     loginUser,              // RF5
-    changeRol               // RF6
+    changeRol,              // RF6
+    UploadImage             // RF7
 }
