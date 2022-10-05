@@ -79,12 +79,10 @@ function savePrograma(req, res) {//tiene un error en la validacion
   let programa = new Programa();
 
   Programa.findOne({
-    nombre_programa: params.nombre_programa,
-    descripcion_programa: params.descripcion_programa,
+    nombre_programa: params.nombre_programa
   }).exec((err, data) => {
     if (err) return res.status(500).send({ mensaje: mensajes.m500 });
-    if (!data || data.nombre_programa != params.nombre_programa ||
-        data.descripcion_programa != params.descripcion_programa
+    if (!data || data.nombre_programa != params.nombre_programa 
     ) {
       if (params.nombre_programa || params.descripcion_programa) {
         programa.nombre_programa = params.nombre_programa;

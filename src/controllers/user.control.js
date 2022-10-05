@@ -131,7 +131,7 @@ function listUsers(req, res){
 
 // Funcion AsignarRol:
 function changeRol(req, res){
-
+//cambiar tipo de usuario
     let usuario = new User();
     let usuarioid = req.params.idusuario;
     let params = req.body
