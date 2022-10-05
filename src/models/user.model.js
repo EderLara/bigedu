@@ -19,7 +19,7 @@ const UsuarioSchema = Schema({
     Es_Lider : { type : Boolean, default: false },                  // Lider de programa
     DatosUser : {
         IdenUser : String,                                          // Número de identificación
-        NombUser : String,                                          // Nombres del Usuario
+        NombUser : String,                                         // Nombres del Usuario
         ApelUser : String,                                          // Apellidos del Usuario
         EmaiUser : String,                                          // Correo Electrónico personal del usuario 
         TeleUser : String,                                          // Teléfono del usuario
@@ -30,3 +30,4 @@ const UsuarioSchema = Schema({
 })
 
 module.exports = mongoose.model('Usuario', UsuarioSchema)
+

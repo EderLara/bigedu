@@ -9,6 +9,7 @@
 // Modelo de datos:
 const User = require('../models/user.model')
 
+
 // Constantes y librerias
 const bcrypt = require('bcrypt-nodejs')
 const mongoosePaginate =  require('mongoose-pagination')
@@ -89,17 +90,17 @@ function delUser(req, res){
     let user = req.params.idusuario;
     let usuario = new User();
     
-    // Seguridad para no eliminar el campo password:
-   // usuario.EstaUser = 'Inactivo';
+    usuario.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(user, usuario, {new: true}, (err, userUpdated)=>{
+    //por aitageo: 'le pase la propiedad Estauser para cambiar el estado reasignandola'
+    User.findByIdAndUpdate(user,{EstaUser : 'Inactivo'}, {new: true}, (err, userUpdated)=>{
         if (err) throw err;
         console.error(err);
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
         // Si todo sale bien:
-        return res.status(200).send({ Usuario: userUpdated })
+        return res.status(200).send({ userUpdated })//devuelvo solo el objeto
         });//no modifica en el documento en mongodb: tipo de usuario
 }
 
@@ -131,15 +132,20 @@ function listUsers(req, res){
 // Funcion AsignarRol:
 function changeRol(req, res){
 
+    let usuario = new User();
     let usuarioid = req.params.idusuario;
-    let update = req.body;
-    console.log(update);
+    let params = req.body
+    usuario.NickName = params.nickname;
+    let nickname = usuario.NickName;
+    usuario.DatosUser.NombUser = params.nombuser;
+    let nombre = usuario.DatosUser.NombUser;
+  
     
     // Seguridad para no eliminar el campo password:
-    delete update.PassUser;
+   // delete update.PassUser;
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(usuarioid,update, {new: true}, (err, userUpdated)=>{
+    User.findByIdAndUpdate(usuarioid,{NickName:nickname,DatosUser:{NombUser:nombre}},{new: true}, (err, userUpdated)=>{
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
@@ -194,6 +200,8 @@ function UploadImage(req, res){
         let fileName = fileSplit[4];
         let  extSplit = fileName.split('\.');
         let  fileExt = extSplit[1];
+
+           if(fs.existsSync('src/assets/documentos/img/')){
     
            if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
 
@@ -219,7 +227,7 @@ function UploadImage(req, res){
             message: fileName
         });
     }
-
+    }
 }
 
 

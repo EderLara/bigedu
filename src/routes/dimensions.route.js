@@ -14,8 +14,8 @@ const md_auth = require('../middlewares/auth');
 
 //Rutas:
 api.post('/perfiles/nuevo', dimensionControl.saveTipoUser);
-api.get('/perfiles/nuevo/:id', dimensionControl.getTipoUser);
-api.put('/perfiles/nuevo/:id',dimensionControl.updateTipoUser);
+api.get('/perfiles/buscar/:id', dimensionControl.getTipoUser);
+api.put('/perfiles/actualizar/:id',dimensionControl.updateTipoUser);
 api.post('/programa/nuevo', dimensionControl.savePrograma);
 
 

@@ -47,7 +47,7 @@ function getTipoUser(req,res){
     let tipouserUp = new TipoUser();
     tipouserUp.nombre_tipoUsuario = req.body;
 
-    TipoUser.findById(TipoUserId,nombre,{new :true},((err,TipoUserFound)=>{
+    TipoUser.findById(TipoUserId,tipouserUp.nombre_tipoUsuario,{new :true},((err,TipoUserFound)=>{
         if(err) throw err;
         if(!TipoUserFound) return res.status(404).send({mensaje: mensajes.m404});
         return res.status(200).send({TipoUserFound});
