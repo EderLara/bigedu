@@ -68,6 +68,21 @@ function updateTipoUser(req,res){
 
     }))
 }
+
+
+
+function deleteTipoUser(req,res){
+  let TipoUserId = req.params.id;
+  let params = req.body;
+  let nombre_tipoUsuario = params.nombre_tipoUsuario;
+  TipoUser.findByIdAndDelete(TipoUserId,{new: true},(error,TipoUserDelete)=>{
+          if(error) throw err;
+          if(!TipoUserDelete) return res.status(404).send({mensaje: mensajes.m404});
+          return res.status(200).send({mensaje: mensajes.m200,TipoUser:TipoUserDelete});
+  })
+
+
+}
 /* ---------------------------------------------------- Fin Crud Tipo User ---------------------------------------------------- */
 
 
@@ -101,6 +116,40 @@ function savePrograma(req, res) {//tiene un error en la validacion
   });
 }
 
+
+function listProgramas(req,res){
+  Programa.find((err,TodosProgramas)=>{
+    if (err) throw err;
+    if (!TodosProgramas){
+        return res.status(404).send({ mensaje: mensajes.m404 });
+    }
+    return res.status(200).send({mensaje: mensajes.m200,programas: TodosProgramas });
+  })
+}
+
+
+function getPrograma(req,res){
+  let programId = req.params.id;
+  
+  Programa.findById(programId,(error,programFound)=>{
+    if (error) throw error;
+    if (!programFound){
+        return res.status(404).send({ mensaje: mensajes.m404 });
+    }
+    return res.status(200).send({mensaje: mensajes.m200, programFound });
+
+  })
+
+
+}
+
+
+
+
+
+/* ---------------------------------------------------- Fin CRUD  Programa---------------------------------------------------- */
+
+
 function saveDocumento(req, res) {
 
 }
@@ -117,6 +166,10 @@ module.exports = {
     saveTipoUser,
     getTipoUser,
     updateTipoUser,
+    deleteTipoUser,
     savePrograma,
+    listProgramas,
+    getPrograma
+
     
 }

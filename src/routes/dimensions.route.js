@@ -16,7 +16,14 @@ const md_auth = require('../middlewares/auth');
 api.post('/perfiles/nuevo', dimensionControl.saveTipoUser);
 api.get('/perfiles/buscar/:id', dimensionControl.getTipoUser);
 api.put('/perfiles/actualizar/:id',dimensionControl.updateTipoUser);
+api.delete('/perfiles/borrar/:id', dimensionControl.deleteTipoUser);
+
+/* -------------------------------------------------- */
+
 api.post('/programa/nuevo', dimensionControl.savePrograma);
+api.get('/programa/todos', dimensionControl.listProgramas);
+api.get('/programa/buscar/:id', dimensionControl.getPrograma);
+
 
 
 module.exports = api;
