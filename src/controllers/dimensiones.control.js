@@ -73,8 +73,7 @@ function updateTipoUser(req,res){
 
 function deleteTipoUser(req,res){
   let TipoUserId = req.params.id;
-  let params = req.body;
-  let nombre_tipoUsuario = params.nombre_tipoUsuario;
+ 
   TipoUser.findByIdAndDelete(TipoUserId,{new: true},(error,TipoUserDelete)=>{
           if(error) throw err;
           if(!TipoUserDelete) return res.status(404).send({mensaje: mensajes.m404});
@@ -143,6 +142,42 @@ function getPrograma(req,res){
 
 }
 
+function UpdateProgram(req,res){
+  let ProgramId = req.params.id;
+  let params = req.body;
+  let nombre_program = params.nombre_programa;
+  let descripcion_programa = params.descripcion_programa;
+  let data = {};
+  data = {
+    nombre_program,
+    descripcion_programa
+  }
+
+  Programa.findByIdAndUpdate(ProgramId,data,{new:true},(error,ProgramUpdate)=>{
+    if (error) throw error;
+    if(!ProgramUpdate){
+      return res.status(404).send({mensaje:mensajes.m404});
+    } 
+     return res.status(200).send({mensaje:mensajes.m200,ProgramUpdate});
+
+  })
+
+}
+
+//no se si dejarlo que borre fisico o ponerle un inactivo
+function deleteProgram(req,res){
+  let ProgramId = req.params.id;
+
+  Programa.findByIdAndRemove(ProgramId,(error,ProgramDelete)=>{
+    if (error) throw error;
+    if(!ProgramDelete){
+      return res.status(404).send({mensaje:mensajes.m404});
+  }
+
+  return res.status(200).send({mensaje:mensajes.m200,ProgramDelete})
+
+})
+}
 
 
 
@@ -169,7 +204,9 @@ module.exports = {
     deleteTipoUser,
     savePrograma,
     listProgramas,
-    getPrograma
+    getPrograma,
+    UpdateProgram,
+    deleteProgram
 
     
 }
