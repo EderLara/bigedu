@@ -26,5 +26,10 @@ api.get('/programa/buscar/:id', dimensionControl.getPrograma);
 api.put('/programa/actualizar/:id', dimensionControl.UpdateProgram);
 api.delete('/programa/borrar/:id', dimensionControl.deleteProgram);
 
+/* -------------------------------------------------- */
+
+api.post('/documento/nuevo', dimensionControl.saveDocumento);
+
+
 
 module.exports = api;

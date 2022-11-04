@@ -9,6 +9,7 @@
 // Modelo de datos:
 const TipoUser = require('../models/tipouser.model');
 const Programa = require('../models/programa.model');
+const Documento = require('../models/documentos.model')
 
 const { mensajes } = require('../util/estados');
 const momento = require('moment');
@@ -180,14 +181,72 @@ function deleteProgram(req,res){
 }
 
 
-
-
 /* ---------------------------------------------------- Fin CRUD  Programa---------------------------------------------------- */
+// nombre_documento: String,
+//     descripcion_documento : String,
+//     formato_documento : String,
 
+/* ---------------------------------------------------- Inicio CRUD  Documento---------------------------------------------------- */
 
 function saveDocumento(req, res) {
+    let documento = new Documento();
+    let params = req.body;
+    let nombre_documento = params.nombre_documento;
+    let descripcion_documento = params.descripcion_documento;
+    let formato_documento = params.formato_documento;
+    let data = {};
+    data = {
+      nombre_documento,
+      descripcion_documento,
+      formato_documento
+    }
 
-}
+    //validacion para saber si existe el documento
+    Documento.findOne({nombre_documento:params.nombre_documento})
+    .exec((error,document)=>{
+      if (error) return res.status(500).send({ mensaje: mensajes.m500 });
+       if(!document || document.nombre_documento != params.nombre_documento);{
+        // campos obligatorios:
+        if (params.nombre_documento) {
+          documento.nombre_documento = params.nombre_documento;
+          documento.descripcion_documento = params.descripcion_documento;
+          documento.formato_documento = params.formato_documento;
+          
+          //le paso los otros campos en data
+          documento.save(data,(error,DocumentStored)=>{
+            if(error) throw error;
+            if (DocumentStored) {
+              return res.status(200).send({ DocumentStored });
+          }
+
+
+          })
+
+        }
+        else {
+          return res.status(404).send({ mensaje: mensajes.m000 });
+        }
+      }
+    });
+    
+  }
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------- Fin CRUD  Documento---------------------------------------------------- */
 
 function saveInstitucion(req, res) {
     
@@ -206,7 +265,8 @@ module.exports = {
     listProgramas,
     getPrograma,
     UpdateProgram,
-    deleteProgram
+    deleteProgram,
+    saveDocumento
 
     
 }
