@@ -9,13 +9,15 @@
 // Modelo de datos:
 const TipoUser = require('../models/tipouser.model');
 const Programa = require('../models/programa.model');
-const Documento = require('../models/documentos.model')
+const Documento = require('../models/documentos.model');
+const Institucion = require('../models/institucion.model');
 
 const { mensajes } = require('../util/estados');
 const momento = require('moment');
+const { exists } = require('../models/tipouser.model');
 
 
-/* ---------------------------------------------------- CRUD ---------------------------------------------------- */
+/* ---------------------------------------------------- CRUD TipoUser ---------------------------------------------------- */
 function saveTipoUser(req, res){
     let params = req.body;
     let tipouser = new TipoUser();
@@ -206,6 +208,7 @@ function saveDocumento(req, res) {
     .exec((error,document)=>{
       if (error) return res.status(500).send({ mensaje: mensajes.m500 });
        if(!document || document.nombre_documento != params.nombre_documento);{
+        
         // campos obligatorios:
         if (params.nombre_documento) {
           documento.nombre_documento = params.nombre_documento;
@@ -224,11 +227,25 @@ function saveDocumento(req, res) {
 
         }
         else {
-          return res.status(404).send({ mensaje: mensajes.m000 });
+          return res.status(200).send({ mensaje: mensajes.m409 });
         }
       }
     });
     
+  }
+
+
+  function getDocumento(req,res){
+    let DocumentId = req.params.id;
+
+    Documento.findById(DocumentId,(error,DocumentFound)=>{
+      if(error) throw error;
+      if (!DocumentFound){
+          return res.status(404).send({ mensaje: mensajes.m404 });
+      }
+      return res.status(200).send({mensaje:mensajes.m200,DocumentFound});
+
+    })
   }
 
     
@@ -248,9 +265,56 @@ function saveDocumento(req, res) {
 
 /* ---------------------------------------------------- Fin CRUD  Documento---------------------------------------------------- */
 
+
+/* ---------------------------------------------------- Inicio CRUD Institucion---------------------------------------------------- */
+
 function saveInstitucion(req, res) {
-    
-}
+  let institucion = new Institucion;
+  let params = req.body;
+  let nombre_institucion = params.nombre_institucion;
+  let ubicacion_geografica = {};
+  let lat = params.lat;
+  let lng = params.lng;
+  ubicacion_geografica = {lat,lng};
+  let telefono_ie = params.telefono_ie;
+  let nombre_rector = params.nombre_rector;
+  let nombre_coordinador = params.nombre_coordinador;
+  let data = {};
+  data = {nombre_institucion,telefono_ie,nombre_rector,nombre_coordinador}
+
+  Institucion.findOne({nombre_institucion:params.nombre_institucion})
+  .exec((error,data)=>{
+    if (error) return res.status(500).send({ mensaje: mensajes.m500 });
+    if(data){
+      return res.status(200).send({mensaje:mensajes.m409});
+    }else {
+      if(params.nombre_institucion){
+       institucion.nombre_institucion = params.nombre_institucion;
+       institucion.ubicacion_geografica = ubicacion_geografica;
+       institucion.nombre_rector = params.nombre_rector;//no lee linea 291 y 292
+       institucion.nombre_coordinador = params.nombre_coordinador;
+       institucion.telefono_ie = params.telefono_ie;
+
+
+       institucion.save((err,InstitucionStored)=>{
+        if (err) throw err;
+        if (InstitucionStored) {
+            return res.status(200).send({ institucion: InstitucionStored });
+          }else {
+            return res.status(404).send({ mensaje: mensajes.m000 });
+          }
+
+       });
+      }
+
+      }
+
+    });
+
+
+  }
+
+/* ---------------------------------------------------- Fin CRUD Institucion---------------------------------------------------- */  
 
 function savePeriodo(req, res) {
     
@@ -266,7 +330,9 @@ module.exports = {
     getPrograma,
     UpdateProgram,
     deleteProgram,
-    saveDocumento
+    saveDocumento,
+    getDocumento,
+    saveInstitucion
 
     
 }

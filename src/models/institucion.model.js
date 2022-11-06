@@ -22,4 +22,4 @@ const institucionSchema = Schema({
     creado_el: { type : Date, default: Date.now }
 })
 
-module.exports = mongoose.model('Programa', institucionSchema);
+module.exports = mongoose.model('Institucion', institucionSchema);

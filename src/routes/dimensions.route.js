@@ -29,7 +29,11 @@ api.delete('/programa/borrar/:id', dimensionControl.deleteProgram);
 /* -------------------------------------------------- */
 
 api.post('/documento/nuevo', dimensionControl.saveDocumento);
+api.get('/documento/buscar/:id', dimensionControl.getDocumento);
 
+
+/* -------------------------------------------------- */
+api.post('/institucion/nuevo', dimensionControl.saveInstitucion);
 
 
 module.exports = api;
