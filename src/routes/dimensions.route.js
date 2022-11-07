@@ -30,6 +30,9 @@ api.delete('/programa/borrar/:id', dimensionControl.deleteProgram);
 
 api.post('/documento/nuevo', dimensionControl.saveDocumento);
 api.get('/documento/buscar/:id', dimensionControl.getDocumento);
+api.get('/documento/todos', dimensionControl.getListDocument);
+api.put('/documento/actualizar/:id', dimensionControl.UpdateDocument);
+api.put('/documento/borrar/:id', dimensionControl.DeleteDocument);
 
 
 /* -------------------------------------------------- */

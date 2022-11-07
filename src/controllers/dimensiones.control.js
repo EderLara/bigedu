@@ -168,7 +168,7 @@ function UpdateProgram(req,res){
 }
 
 //no se si dejarlo que borre fisico o ponerle un inactivo
-function deleteProgram(req,res){
+  function deleteProgram(req,res){
   let ProgramId = req.params.id;
 
   Programa.findByIdAndRemove(ProgramId,(error,ProgramDelete)=>{
@@ -184,9 +184,7 @@ function deleteProgram(req,res){
 
 
 /* ---------------------------------------------------- Fin CRUD  Programa---------------------------------------------------- */
-// nombre_documento: String,
-//     descripcion_documento : String,
-//     formato_documento : String,
+
 
 /* ---------------------------------------------------- Inicio CRUD  Documento---------------------------------------------------- */
 
@@ -235,6 +233,17 @@ function saveDocumento(req, res) {
   }
 
 
+   function getListDocument(req,res){
+      Documento.find((err,TodosDocuments)=>{
+        if(err) throw err;
+        if(!TodosDocuments){
+          return res.status(404).send({mensaje:mensajes.m404});
+        }
+          return res.status(200).send({mensaje:mensajes.m200,TodosDocuments});
+      })
+   }
+
+
   function getDocumento(req,res){
     let DocumentId = req.params.id;
 
@@ -247,6 +256,46 @@ function saveDocumento(req, res) {
 
     })
   }
+
+
+  function UpdateDocument(req,res){
+   let DocumentId  = req.params.id;
+   let params = req.body;
+   let nombre_documento = params.nombre_documento;
+   let descripcion_documento = params.descripcion_documento;
+   let formato_documento = params.formato_documento;
+   let data = {};
+   data = {nombre_documento,descripcion_documento,formato_documento}
+
+   Documento.findByIdAndUpdate(DocumentId,data,{new:true},(err,DocumentUpdate)=>{
+    if(err) throw err;
+    if(!DocumentUpdate){
+        return res.status(404).send({mensaje:mensajes.m404});
+    }
+        return res.status(200).send({mensaje:mensajes.m200,DocumentUpdate});
+
+   });
+
+  }
+
+
+
+  function DeleteDocument(req,res){
+    let DocumentId = req.params.id;
+    let document = new Documento();
+
+    document.Estado = "Inactivo";
+
+    Documento.findByIdAndUpdate(DocumentId,{Estado : 'Inactivo'},{new:true},(err,DocumentDelete)=>{
+      if (err) throw err;
+      if (!DocumentDelete) {
+        return res.status(404).send({ mensaje: mensajes.m404 });
+      }
+        return res.status(200).send({DocumentDelete:DocumentDelete});
+    })
+         
+  }
+
 
     
   
@@ -267,7 +316,7 @@ function saveDocumento(req, res) {
 
 
 /* ---------------------------------------------------- Inicio CRUD Institucion---------------------------------------------------- */
-
+//valida, falta nombre_rector y coordinador
 function saveInstitucion(req, res) {
   let institucion = new Institucion;
   let params = req.body;
@@ -332,6 +381,9 @@ module.exports = {
     deleteProgram,
     saveDocumento,
     getDocumento,
+    getListDocument,
+    UpdateDocument,
+    DeleteDocument,
     saveInstitucion
 
     
