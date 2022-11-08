@@ -17,7 +17,7 @@
          m405: 'No se pudo seguir debido a errores de semántica',
          m408: 'Se ha agotado el tiempo de para ejecutar la acción',
          m409: 'Ya se encuentra registrado en la base de datos',
-         m500: 'Ha ocurrido un error en la petición, no es posible acceder a la base de datos',
+         m500: 'Ha ocurrido un error en la petición',
          m502: 'La extension no esta permitida',
          m000: 'Debes llenar los campos obligatorios'
      }

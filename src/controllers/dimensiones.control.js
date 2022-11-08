@@ -25,7 +25,9 @@ function saveTipoUser(req, res){
     TipoUser.findOne({nombre_tipoUsuario: params.nombre_tipouser}
                     ).exec((err, data)=>{
                         if (err) return res.status(500).send({ mensaje:mensajes.m500 });
-                        if (!data || data.nombre_tipoUsuario != params.nombre_tipouser) {
+  /*por aitageo */      if (data) {
+                          return res.status(200).send({mensaje:mensajes.m409});
+                        }else {
                             // campos obligatorios:
                             if (params.nombre_tipouser) {
                                 tipouser.nombre_tipoUsuario = params.nombre_tipouser;
@@ -36,9 +38,7 @@ function saveTipoUser(req, res){
                                         return res.status(200).send({ tipo_user: tipoStored });
                                     }
                                 })
-                            } else {
-                                return res.status(404).send({ mensaje: mensajes.m000 });
-                            }
+                            } 
                     }
                 });
 }
@@ -96,12 +96,13 @@ function savePrograma(req, res) {//tiene un error en la validacion
   let programa = new Programa();
 
   Programa.findOne({
-    nombre_programa: params.nombre_programa
-  }).exec((err, data) => {
+    nombre_programa: params.nombre_programa})
+    .exec((err, data) => {
     if (err) return res.status(500).send({ mensaje: mensajes.m500 });
-    if (!data || data.nombre_programa != params.nombre_programa 
-    ) {
-      if (params.nombre_programa || params.descripcion_programa) {
+    if (data){
+         return res.status(200).send({mensaje:mensajes.m409});
+    }else {
+      if (params.nombre_programa) {
         programa.nombre_programa = params.nombre_programa;
         programa.descripcion_programa = params.descripcion_programa;
 
@@ -111,8 +112,6 @@ function savePrograma(req, res) {//tiene un error en la validacion
             return res.status(200).send({ programa: programaStored });
           }
         });
-      } else {
-        return res.status(404).send({ mensaje: mensajes.m000 });
       }
     }
   });
@@ -186,6 +185,7 @@ function UpdateProgram(req,res){
 /* ---------------------------------------------------- Fin CRUD  Programa---------------------------------------------------- */
 
 
+
 /* ---------------------------------------------------- Inicio CRUD  Documento---------------------------------------------------- */
 
 function saveDocumento(req, res) {
@@ -205,7 +205,9 @@ function saveDocumento(req, res) {
     Documento.findOne({nombre_documento:params.nombre_documento})
     .exec((error,document)=>{
       if (error) return res.status(500).send({ mensaje: mensajes.m500 });
-       if(!document || document.nombre_documento != params.nombre_documento);{
+       if(document){
+           return res.status(200).send({mensaje:mensajes.m409});
+        }else {
         
         // campos obligatorios:
         if (params.nombre_documento) {
@@ -223,9 +225,6 @@ function saveDocumento(req, res) {
 
           })
 
-        }
-        else {
-          return res.status(200).send({ mensaje: mensajes.m409 });
         }
       }
     });
@@ -296,29 +295,15 @@ function saveDocumento(req, res) {
          
   }
 
-
-    
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ---------------------------------------------------- Fin CRUD  Documento---------------------------------------------------- */
+
+
 
 
 /* ---------------------------------------------------- Inicio CRUD Institucion---------------------------------------------------- */
 //valida, falta nombre_rector y coordinador
 function saveInstitucion(req, res) {
-  let institucion = new Institucion;
+  let institucion = new Institucion();
   let params = req.body;
   let nombre_institucion = params.nombre_institucion;
   let ubicacion_geografica = {};
@@ -363,6 +348,38 @@ function saveInstitucion(req, res) {
 
   }
 
+  
+  function GetListInstitucions(req,res){
+    Institucion.find((err,TodasInstituciones)=>{
+        if(err)  return res.status(500).send({mensaje:mensajes.m500});
+        if(!TodasInstituciones){
+          return res.status(404).send({mensaje:mensajes.m404})
+        }
+          return res.status(200).send({mensaje:mensajes.m200,TodasInstituciones:TodasInstituciones})
+    })
+
+  }
+  
+  
+  function GetInstitucion(req,res){
+    let InstitucionId = req.params.id;
+
+    Institucion.findById(InstitucionId,(err,InstitucionFound)=>{
+      if(err) return res.status(500).send({mensaje:mensajes.m500});
+      if(!InstitucionFound){
+        return res.status(404).send({mensaje:mensajes.m404});
+      }
+         return res.status(200).send({mensaje:mensajes.m200,InstitucionFound:InstitucionFound})
+    });
+
+  }
+
+
+
+
+
+
+
 /* ---------------------------------------------------- Fin CRUD Institucion---------------------------------------------------- */  
 
 function savePeriodo(req, res) {
@@ -384,7 +401,9 @@ module.exports = {
     getListDocument,
     UpdateDocument,
     DeleteDocument,
-    saveInstitucion
+    saveInstitucion,
+    GetListInstitucions,
+    GetInstitucion
 
     
 }
