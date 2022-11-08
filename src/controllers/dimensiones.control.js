@@ -374,6 +374,37 @@ function saveInstitucion(req, res) {
 
   }
 
+  function UpdateInstitucion(req,res){
+    let InstitucionId = req.params.id;
+    let update = req.body;
+    // let params = req.body;
+    // let nombre_institucion = params.nombre_institucion;
+    // let telefono_ie = params.telefono_ie;
+    // let nombre_rector = params.nombre_rector;
+    // let nombre_coordinador = params.nombre_coordinador;
+
+    Institucion.findByIdAndUpdate(InstitucionId,update,(err,InstituUpdate)=>{
+          if(err) return res.status(500).send({mensaje:mensajes.m500});
+          if(!InstituUpdate){
+            return res.status(404).send({mensaje:mensajes.m404});
+          }
+           return res.status(200).send({mensaje:mensajes.m200,InstituUpdate:InstituUpdate});
+    })
+  }
+
+
+  function DeleteInstituto(req,res){
+    let  InstitucionDelete = req.params.id;
+
+    Institucion.findByIdAndDelete(InstitucionDelete,(err,InstitutoDelete)=>{
+        if(err) return res.status(500).send({mensaje:mensajes.m500});
+        if(!InstitutoDelete){
+          return res.status(404).send({mensaje:mensajes.m404});
+        }
+        return res.status(200).send({mensaje:mensajes.m200,InstitutoDelete:InstitutoDelete});
+    })
+  }
+
 
 
 
@@ -403,7 +434,9 @@ module.exports = {
     DeleteDocument,
     saveInstitucion,
     GetListInstitucions,
-    GetInstitucion
+    GetInstitucion,
+    UpdateInstitucion,
+    DeleteInstituto
 
     
 }

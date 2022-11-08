@@ -39,5 +39,8 @@ api.put('/documento/borrar/:id', dimensionControl.DeleteDocument);
 api.post('/institucion/nuevo', dimensionControl.saveInstitucion);
 api.get('/institucion/todos', dimensionControl.GetListInstitucions);
 api.get('/institucion/buscar/:id', dimensionControl.GetInstitucion);
+api.put('/institucion/actualizar/:id', dimensionControl.UpdateInstitucion);
+api.delete('/institucion/borrar/:id', dimensionControl.DeleteInstituto);
+
 
 module.exports = api;
