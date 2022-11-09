@@ -11,7 +11,7 @@ const TipoUser = require('../models/tipouser.model');
 const Programa = require('../models/programa.model');
 const Documento = require('../models/documentos.model');
 const Institucion = require('../models/institucion.model');
-
+const Periodo = require('../models/periodo.model')
 const { mensajes } = require('../util/estados');
 const momento = require('moment');
 const { exists } = require('../models/tipouser.model');
@@ -340,14 +340,9 @@ function saveInstitucion(req, res) {
 
        });
       }
-
       }
-
     });
-
-
-  }
-
+}
   
   function GetListInstitucions(req,res){
     Institucion.find((err,TodasInstituciones)=>{
@@ -405,18 +400,52 @@ function saveInstitucion(req, res) {
     })
   }
 
-
-
-
-
-
-
 /* ---------------------------------------------------- Fin CRUD Institucion---------------------------------------------------- */  
 
+
+/* ---------------------------------------------------- Inicio CRUD Periodo---------------------------------------------------- */
+
+
 function savePeriodo(req, res) {
-    
+  let periodo = new Periodo();
+  let params = req.body; 
+  let año_lectivo = params.año_lectivo;
+  let fecha_inicio = momento().format('LLL');
+  let fecha_fin = Date.now;
+  let fechas = {}
+  fechas = {fecha_inicio,fecha_fin};
+
+  Periodo.findOne({año_lectivo:params.año_lectivo})
+  .exec((err,data)=>{
+    if (err) return res.status(500).send({ mensaje: mensajes.m500 });
+    if(data){
+      return res.status(200).send({mensaje:mensajes.m409});
+    }else {
+      if(params.año_lectivo){
+        periodo.año_lectivo = params.año_lectivo;
+        año_lectivo;
+        fecha_inicio;
+        fecha_fin;
+
+        periodo.save(fechas,(err,PeriodoStored)=>{
+          if (err) return res.status(500).send({ mensaje: mensajes.m500 }); 
+          if(!PeriodoStored){
+            return res.status(200).send({mensaje:mensajes.m409});
+          }
+          return res.status(200).send({mensaje:mensajes.m200,PeriodoStored:PeriodoStored});
+        })
+      
+
+    }
+
+}
+  });
 }
 
+
+
+
+/* ---------------------------------------------------- Fin CRUD Periodo---------------------------------------------------- */  
 module.exports = {
     saveTipoUser,
     getTipoUser,
@@ -436,7 +465,8 @@ module.exports = {
     GetListInstitucions,
     GetInstitucion,
     UpdateInstitucion,
-    DeleteInstituto
+    DeleteInstituto,
+    savePeriodo
 
     
 }
