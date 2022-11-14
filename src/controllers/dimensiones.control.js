@@ -411,7 +411,7 @@ function savePeriodo(req, res) {
   let params = req.body; 
   let año_lectivo = params.año_lectivo;
   let fecha_inicio = momento().format('LLL');
-  let fecha_fin = Date.now;
+  let fecha_fin = params.fecha_fin;
   let fechas = {}
   fechas = {fecha_inicio,fecha_fin};
 
@@ -423,12 +423,12 @@ function savePeriodo(req, res) {
     }else {
       if(params.año_lectivo){
         periodo.año_lectivo = params.año_lectivo;
-        año_lectivo;
-        fecha_inicio;
-        fecha_fin;
+        periodo.año_lectivo = año_lectivo;
+        periodo.fecha_inicio= fecha_inicio;
+        periodo.fecha_fin = params.fecha_fin;;
 
         periodo.save(fechas,(err,PeriodoStored)=>{
-          if (err) return res.status(500).send({ mensaje: mensajes.m500 }); 
+          if (err) throw err;
           if(!PeriodoStored){
             return res.status(200).send({mensaje:mensajes.m409});
           }
@@ -441,6 +441,59 @@ function savePeriodo(req, res) {
 }
   });
 }
+
+
+function getListPeriodos(req,res){
+Periodo.find((err,TodosPeriodos)=>{
+  if(err) throw err;
+  if(!TodosPeriodos){
+    return res.status(404).send({mensaje:mensajes.m404});
+  }
+  return res.status(200).send({mensaje:mensajes.m200,TodosPeriodos:TodosPeriodos});
+})
+}
+
+
+function GetPeriodo(req,res){
+  let periodoId = req.params.id;
+  
+  Periodo.findById(periodoId,(err,PeriodoFound)=>{
+    if(err) return res.status(500).send({mensaje:mensajes.m500});
+    if(!PeriodoFound){
+      res.status(404).send({mensaje:mensajes.m404});
+    }
+    return res.status(200).send({mensaje:mensajes.m200,PeriodoFound:PeriodoFound})
+  })
+}
+
+
+function UpdatePeriodo(req,res){
+  let periodoId = req.params.id;
+  let periodo = req.body;
+
+  Periodo.findByIdAndUpdate(periodoId,periodo,(err,PeriodoUpdated)=>{
+    if(err) return res.status(500).send({mensaje:mensajes.m500});
+    if(!PeriodoUpdated){
+      res.status(404).send({mensaje:mensajes.m404});
+    }
+    return res.status(200).send({mensaje:mensajes.m200,PeriodoUpdated:PeriodoUpdated})
+  })
+
+}
+
+
+function DeletePeriodo(req,res){
+  let  PeriodoId = req.params.id;
+
+  Periodo.findByIdAndDelete(PeriodoId,(err,PeriodoDelete)=>{
+      if(err) return res.status(500).send({mensaje:mensajes.m500});
+      if(!PeriodoDelete){
+        return res.status(404).send({mensaje:mensajes.m404});
+      }
+      return res.status(200).send({mensaje:mensajes.m200,PeriodoDelete:PeriodoDelete});
+  })
+}
+
 
 
 
@@ -466,7 +519,11 @@ module.exports = {
     GetInstitucion,
     UpdateInstitucion,
     DeleteInstituto,
-    savePeriodo
+    savePeriodo,
+    getListPeriodos,
+    GetPeriodo,
+    UpdatePeriodo,
+    DeletePeriodo
 
     
 }

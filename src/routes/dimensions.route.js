@@ -45,6 +45,11 @@ api.delete('/institucion/borrar/:id', dimensionControl.DeleteInstituto);
 
 /* -------------------------------------------------- */
 api.post('/periodo/nuevo', dimensionControl.savePeriodo);
+api.get('/periodo/todos', dimensionControl.getListPeriodos);
+api.get('/periodo/buscar/:id', dimensionControl.GetPeriodo);
+api.put('/periodo/actualizar/:id', dimensionControl.UpdatePeriodo);
+api.delete('/periodo/borrar/:id', dimensionControl.DeletePeriodo);
+
 
 
 
