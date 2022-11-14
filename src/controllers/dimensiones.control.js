@@ -146,16 +146,9 @@ function getPrograma(req,res){
 
 function UpdateProgram(req,res){
   let ProgramId = req.params.id;
-  let params = req.body;
-  let nombre_program = params.nombre_programa;
-  let descripcion_programa = params.descripcion_programa;
-  let data = {};
-  data = {
-    nombre_program,
-    descripcion_programa
-  }
+  let programa = req.body;
 
-  Programa.findByIdAndUpdate(ProgramId,data,{new:true},(error,ProgramUpdate)=>{
+  Programa.findByIdAndUpdate(ProgramId,programa,{new:true},(error,ProgramUpdate)=>{
     if (error) throw error;
     if(!ProgramUpdate){
       return res.status(404).send({mensaje:mensajes.m404});
@@ -260,6 +253,7 @@ function saveDocumento(req, res) {
   function UpdateDocument(req,res){
    let DocumentId  = req.params.id;
    let params = req.body;
+
    let nombre_documento = params.nombre_documento;
    let descripcion_documento = params.descripcion_documento;
    let formato_documento = params.formato_documento;
@@ -425,7 +419,7 @@ function savePeriodo(req, res) {
         periodo.año_lectivo = params.año_lectivo;
         periodo.año_lectivo = año_lectivo;
         periodo.fecha_inicio= fecha_inicio;
-        periodo.fecha_fin = params.fecha_fin;;
+        periodo.fecha_fin = params.fecha_fin;
 
         periodo.save(fechas,(err,PeriodoStored)=>{
           if (err) throw err;
@@ -471,7 +465,7 @@ function UpdatePeriodo(req,res){
   let periodoId = req.params.id;
   let periodo = req.body;
 
-  Periodo.findByIdAndUpdate(periodoId,periodo,(err,PeriodoUpdated)=>{
+  Periodo.findByIdAndUpdate(periodoId,periodo,{new:true},(err,PeriodoUpdated)=>{
     if(err) return res.status(500).send({mensaje:mensajes.m500});
     if(!PeriodoUpdated){
       res.status(404).send({mensaje:mensajes.m404});

@@ -109,8 +109,10 @@ function delUser(req, res){
 // Funcion buscar Usuario:
 function findUser(req, res){
     let Idusuario = req.params.idusuario;//linea modificada por aitageo
-
-    User.findById(Idusuario,{new: true}, (err, userFound)=>{
+    
+  
+   //13/11/2022/ linea 115 columna 30
+    User.findById(Idusuario,{User},{new: true}, (err, userFound)=>{
         if (err) throw err;
         if (!userFound) return res.status(404).send({ mensaje:mensajes.m404 });
         return res.status(200).send({usuario: userFound });
