@@ -18,12 +18,12 @@ let MiddlewareUploads = multiparty({ uploadDir:'src/assets/documentos/img'});
 
 // Rutas:
 api.get('/testuser', userControl.testControlUser);
-api.post('/usuario/nuevo', userControl.saveUser);
+api.post('/usuario/nuevo',md_auth.ensureAuth, userControl.saveUser);
 api.post('/usuario/login', userControl.loginUser);
-api.put('/usuario/:idusuario', userControl.delUser);//No deberia ser el metodo http DELETE?
-api.put('/usuario/rol/:idusuario', userControl.changeRol);
-api.get('/usuario/buscar/:idusuario', userControl.findUser);
-api.get('/usuario/todos', userControl.listUsers);
-api.post('/usuario/image/:id',MiddlewareUploads,userControl.UploadImage);
+api.put('/usuario/:idusuario',md_auth.ensureAuth, userControl.delUser);//No deberia ser el metodo http DELETE?
+api.put('/usuario/rol/:idusuario', md_auth.ensureAuth,userControl.changeRol);
+api.get('/usuario/buscar/:idusuario',md_auth.ensureAuth, userControl.findUser);
+api.get('/usuario/todos',md_auth.ensureAuth, userControl.listUsers);
+api.post('/usuario/image/:id',[MiddlewareUploads,md_auth.ensureAuth],userControl.UploadImage);
 
 module.exports = api;
