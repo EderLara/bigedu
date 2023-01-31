@@ -1,4 +1,4 @@
-/** 
+/**
  * Aplicación BigEdu
  * @author:
  * @year  :
@@ -75,7 +75,7 @@ function saveUser(req, res){
                                         } else {
                                             return res.status(404).send({ mensaje: 'No se ha registrado el usuario' });
                                         }
-                                    });  
+                                    });
                                 });
                             }
                          });
@@ -89,7 +89,7 @@ function delUser(req, res){
 
     let user = req.params.idusuario;
     let usuario = new User();
-    
+
     usuario.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
@@ -109,8 +109,8 @@ function delUser(req, res){
 // Funcion buscar Usuario:
 function findUser(req, res){
     let Idusuario = req.params.idusuario;//linea modificada por aitageo
-    
-  
+
+
    //13/11/2022/ linea 115 columna 30
     User.findById(Idusuario,{User},{new: true}, (err, userFound)=>{
         if (err) throw err;
@@ -141,8 +141,8 @@ function changeRol(req, res){
     let nickname = usuario.NickName;
     usuario.DatosUser.NombUser = params.nombuser;
     let nombre = usuario.DatosUser.NombUser;
-  
-    
+
+
     // Seguridad para no eliminar el campo password:
    // delete update.PassUser;
 
@@ -173,10 +173,10 @@ function loginUser(req, res){
             bcrypt.compare(passuser, user.PassUser, (err, ok)=>{
                 //console.log(ok);
                 if (err) throw err;
-                
+
                 if (ok){
                     // Validación de parametro token:
-                    if (params.getToken) {      
+                    if (params.getToken) {
                         return res.status(200).send({
                             token : jwt.createToken(user)
                         });
@@ -204,7 +204,7 @@ function UploadImage(req, res){
         let  fileExt = extSplit[1];
 
            if(fs.existsSync('src/assets/documentos/img/')){
-    
+
            if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
 
             User.findByIdAndUpdate(UserId, {image: fileName}, {new: true}, (err, userUpdated) => {

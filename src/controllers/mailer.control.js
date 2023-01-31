@@ -14,17 +14,17 @@ const envioCorreo = (req,res)=>{
  });
 
  const options = {
-    from:'Bigedu',
+    from:body.email,
     subject: body.asunto,
-    to:body.email,
-    text:body.mensaje
+    to:process.env.USER,
+    mensaje:body.mensaje
+     
  };
 
  config.sendMail(options,(error,result)=>{
     if(error) return res.json({ok:false,msg:error})
-    return res.json({
-        ok:true,
-        msg:result
+    return res.status(200).send({
+        result, msg: ` este es el correo ${options.from}`
     })
  })
 }
