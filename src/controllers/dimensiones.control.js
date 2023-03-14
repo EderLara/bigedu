@@ -208,9 +208,9 @@ function saveDocumento(req, res) {
       } else {
         // campos obligatorios:
         if (params.nombre_documento) {
-          documento.nombre_documento = params.nombre_documento;
-          documento.descripcion_documento = params.descripcion_documento;
-          documento.formato_documento = params.formato_documento;
+          documento.nombre_documento = nombre_documento;
+          documento.descripcion_documento = descripcion_documento;
+          documento.formato_documento = formato_documento;
 
           //le paso los otros campos en data
           documento.save(data, (error, DocumentStored) => {
