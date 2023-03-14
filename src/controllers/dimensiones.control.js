@@ -39,18 +39,22 @@ function saveTipoUser(req, res){
                 });
 }
 
+// Guardar programa de formación
 function savePrograma(req, res) {
 
 }
 
+// Guardar Documento
 function saveDocumento(req, res) {
 
 }
 
+// Guardar institución educativa
 function saveInstitucion(req, res) {
     
 }
 
+// Guardar el periodo lectivo = año
 function savePeriodo(req, res) {
     
 }

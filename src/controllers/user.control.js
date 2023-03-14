@@ -84,8 +84,7 @@ function saveUser(req, res){
 function delUser(req, res){
 
     let user = req.params.idusuario;
-    let usuario = new User();
-    
+
     // Seguridad para no eliminar el campo password:
     usuario.EstaUser = 'Inactivo';
 
