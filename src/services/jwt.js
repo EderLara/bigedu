@@ -17,7 +17,7 @@ exports.createToken = function (usuario){
         estauser : usuario.EstaUser,
         // Fechas de creación y expiración del token:
         iat : momento().unix(),
-        exp : momento().add(1, 'days').unix
+        exp : momento().add(1, 'day').unix
     }
     // Codificamos el token:
     return jwt.encode(payload, secretkey)

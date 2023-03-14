@@ -22,11 +22,13 @@ exports.ensureAuth = function (req, res, next) {
         })
     }
     // Cabecera sin comillas dobles o simples (usamos replace funciton):
-    let toker = req.headers.authorization.replace(/['"]+/g, '')
+    let payload;
+    let token = req.headers.authorization.replace(/['"]+/g, '')
+    token = token.replace('Bearer ', '');
     // Intentamos crear el payload:
     try {
         // Decodificar Payload:
-        let payload = jwt.decode(token, secretkey);
+        payload = jwt.decode(token, secretkey);
         // Validamos fecha de caducidad:
         if (payload.exp <= moment().unix()){
             return res.status(401).send({

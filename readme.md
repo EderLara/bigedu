@@ -1,6 +1,6 @@
 # PROYECTO BIGEDU
 
-_Es una aplicacion para uso personal, con esta aplicación se puede llevar un control de ingresos y gastos_
+_Es una aplicacion para uso administrativo del sena, con esta aplicación se puede llevar un control de ingresos y gastos_
 
 ## Comenzando 🚀
 

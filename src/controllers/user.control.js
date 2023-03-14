@@ -1,4 +1,4 @@
-/** 
+/**
  * Aplicación BigEdu
  * @author:
  * @year  :
@@ -9,6 +9,7 @@
 // Modelo de datos:
 const User = require('../models/user.model')
 
+
 // Constantes y librerias
 const bcrypt = require('bcrypt-nodejs')
 const mongoosePaginate =  require('mongoose-pagination')
@@ -18,7 +19,8 @@ const { mensajes } = require('../util/estados')
 const momento = require('moment')
 
 // Servicio de autenticación:
-const jwt = require('../services/jwt')
+const jwt = require('../services/jwt');
+const { async } = require('rxjs');
 
 /* ---------------------------------------------------- TEST ---------------------------------------------------- */
 function testControlUser (req, res){
@@ -52,7 +54,8 @@ function saveUser(req, res){
                             { DatosUser: {EmaiUser: usuario.DatosUser.EmaiUser}},
                             { DatosUser: {IdenUser: usuario.DatosUser.IdenUser}}
                          ]}).exec((err, users) =>{
-                            if (err) return res.status(500).send({ mensaje: mensajes.m500 });
+                            if(err) throw err;
+                           // if (err) return res.status(500).send({ mensaje: mensajes.m500 });
                             if (users && users.length >= 1){
                                 return res.status(200).send({
                                     mensaje: 'El usuario que intenta agregar ya existe'
@@ -65,13 +68,14 @@ function saveUser(req, res){
                                     usuario.EstaUser = 'Activo';
 
                                     usuario.save((err, nuevoUser)=>{
-                                        if (err) return res.status(500).send({ mensaje: mensajes.m500 })
+                                        if(err) throw err;
+                                        //if (err) return res.status(500).send({ mensaje: mensajes.m500 })
                                         if (nuevoUser) {
                                             return res.status(200).send({ usuario: nuevoUser })
                                         } else {
                                             return res.status(404).send({ mensaje: 'No se ha registrado el usuario' });
                                         }
-                                    });  
+                                    });
                                 });
                             }
                          });
@@ -80,32 +84,38 @@ function saveUser(req, res){
     }
 }
 
-// Funcion Activar e inactivar usuario:
+//Funcion Activar e inactivar usuario:
 function delUser(req, res){
 
     let user = req.params.idusuario;
+    let usuario = new User();
 
-    // Seguridad para no eliminar el campo password:
     usuario.EstaUser = 'Inactivo';
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(user, usuario, {new: true}, (err, userUpdated)=>{
+    //por aitageo: 'le pase la propiedad Estauser para cambiar el estado reasignandola'
+    User.findByIdAndUpdate(user,{EstaUser : 'Inactivo'}, {new: true}, (err, userUpdated)=>{
         if (err) throw err;
+        console.error(err);
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
         // Si todo sale bien:
-        return res.status(200).send({ Usuario: userUpdated })
-    });
+        return res.status(200).send({ userUpdated })//devuelvo solo el objeto
+        });//no modifica en el documento en mongodb: tipo de usuario
 }
+
+
 
 // Funcion buscar Usuario:
 function findUser(req, res){
-    let usuario = req.params.usuario
+    let Idusuario = req.params.idusuario;//linea modificada por aitageo
 
-    User.findById(usuario, (err, userFound)=>{
+
+   //13/11/2022/ linea 115 columna 30
+    User.findById(Idusuario,{User},{new: true}, (err, userFound)=>{
         if (err) throw err;
         if (!userFound) return res.status(404).send({ mensaje:mensajes.m404 });
-        return res.status(200).send({ userFound });
+        return res.status(200).send({usuario: userFound });
     })
 }
 
@@ -123,15 +133,21 @@ function listUsers(req, res){
 
 // Funcion AsignarRol:
 function changeRol(req, res){
+//cambiar tipo de usuario
+    let usuario = new User();
+    let usuarioid = req.params.idusuario;
+    let params = req.body
+    usuario.NickName = params.nickname;
+    let nickname = usuario.NickName;
+    usuario.DatosUser.NombUser = params.nombuser;
+    let nombre = usuario.DatosUser.NombUser;
 
-    let usuario = req.params.usuarioid;
-    let update = req.body;
 
     // Seguridad para no eliminar el campo password:
-    delete update.PassUser;
+   // delete update.PassUser;
 
     // Query para buscar y actualizar:
-    User.findByIdAndUpdate(usuario, update, {new: true}, (err, userUpdated)=>{
+    User.findByIdAndUpdate(usuarioid,{NickName:nickname,DatosUser:{NombUser:nombre}},{new: true}, (err, userUpdated)=>{
         if (err) throw err;
         if (!userUpdated) return res.status(404).send({ mensaje: mensajes.m404 });
 
@@ -146,17 +162,21 @@ function loginUser(req, res){
     let params = req.body;
     let nickname = params.nickname;
     let passuser = params.passuser;
+    console.log(params);
 
     // Query para login:
     User.findOne({NickName: nickname}, (err, user)=>{
+        console.log(user);
         if (err) throw err;
         if (user){
             // Encripto el pass del formulario:
             bcrypt.compare(passuser, user.PassUser, (err, ok)=>{
+                //console.log(ok);
                 if (err) throw err;
+
                 if (ok){
                     // Validación de parametro token:
-                    if (params.getToken) {      
+                    if (params.getToken) {
                         return res.status(200).send({
                             token : jwt.createToken(user)
                         });
@@ -172,6 +192,47 @@ function loginUser(req, res){
     })
 }
 
+function UploadImage(req, res){
+    let UserId = req.params.id;
+    let fileName = 'No se ha cargado la imagen';
+
+    if(req.files){
+        let filePath = req.files.image.path;
+        let fileSplit = filePath.split('\\');
+        let fileName = fileSplit[4];
+        let  extSplit = fileName.split('\.');
+        let  fileExt = extSplit[1];
+
+           if(fs.existsSync('src/assets/documentos/img/')){
+
+           if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
+
+            User.findByIdAndUpdate(UserId, {image: fileName}, {new: true}, (err, userUpdated) => {
+                if(err) return res.status(500).send({mensaje: mensajes.m402});
+
+                if(!userUpdated) return res.status(404).send({mensaje:mensajes.m404});
+
+                return res.status(200).send({
+                    user: userUpdated
+                });
+            });
+
+        }else{
+            fs.unlink(filePath, (err) => {
+                if(err) throw err;
+                return res.status(200).send({mensaje:mensajes.m502});
+            });
+        }
+
+    }else{
+        return res.status(200).send({
+            message: fileName
+        });
+    }
+    }
+}
+
+
 module.exports = {
     testControlUser,
     saveUser,               // RF1
@@ -179,5 +240,6 @@ module.exports = {
     findUser,               // RF4
     listUsers,              // RF4
     loginUser,              // RF5
-    changeRol               // RF6
+    changeRol,              // RF6
+    UploadImage             // RF7
 }
