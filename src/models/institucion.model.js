@@ -12,6 +12,8 @@ const Schema = mongoose.Schema;
 
 const institucionSchema = Schema({
     nombre_institucion: String,
+    departamento : String,
+    municipio: String,
     ubicacion_geografica : {
         lat : Number,
         lng : Number
