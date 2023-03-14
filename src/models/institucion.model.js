@@ -16,7 +16,11 @@ const institucionSchema = Schema({
         lat : Number,
         lng : Number
     },
-    telefono_ie : String,
+    telefonos_ie : {
+        telefono_ie : String,
+        telefono_rector : String,
+        telefono_coordinador:String
+    },
     rector_ie :  { type : Schema.ObjectId, ref : 'Usuario' },
     coordinador_ie : { type : Schema.ObjectId, ref : 'Usuario' },
     creado_el: { type : Date, default: Date.now }

@@ -11,6 +11,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const DocumentoSchema = Schema({
+    ficha : { type : Schema.ObjectId, ref: 'Ficha' },      // Programa de formación
     nombre_documento: String,
     descripcion_documento : String,
     formato_documento : String,
