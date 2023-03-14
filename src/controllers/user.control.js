@@ -200,14 +200,14 @@ function UploadImage(req, res){
         let filePath = req.files.image.path;
         let fileSplit = filePath.split('\\');
         let fileName = fileSplit[4];
-        let  extSplit = fileName.split('\.');
-        let  fileExt = extSplit[1];
+        let extSplit = fileName.split('\.');
+        let fileExt = extSplit[1];
 
            if(fs.existsSync('src/assets/documentos/img/')){
 
            if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
 
-            User.findByIdAndUpdate(UserId, {image: fileName}, {new: true}, (err, userUpdated) => {
+            User.findByIdAndUpdate(UserId, {[DatosUser.ImgeUser]: fileName}, {new: true}, (err, userUpdated) => {
                 if(err) return res.status(500).send({mensaje: mensajes.m402});
 
                 if(!userUpdated) return res.status(404).send({mensaje:mensajes.m404});
