@@ -10,8 +10,9 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema;
 
+// Modificar, aún hace falta indicar el formato que debe tener cada documento, este modelo está muy escueto y no cumple con los requerimientos solicitados.
+
 const DocumentoSchema = Schema({
-    ficha : { type : Schema.ObjectId, ref: 'Ficha' },      // Programa de formación
     nombre_documento: String,
     descripcion_documento : String,
     formato_documento : String,

@@ -22,3 +22,59 @@
          m000: 'Debes llenar los campos obligatorios'
      }
 } 
+
+/*
+
+db.coleccion1.aggregate([
+  {
+    $lookup:
+      {
+        from: "coleccion2",
+        localField: "_id",
+        foreignField: "idColeccionUno",
+        as: "datosRelacionados"
+      }
+  }
+])
+
+// Mucho mas elaborada:
+db.tabla1.aggregate(
+  [
+    {
+      $lookup: {
+        from: "tabla2",
+        localField: "_id",
+        foreignField: "relacion_ ObjectId_1",
+        as: "info_relacionada_tabla2"
+      }
+    },
+   {
+      $lookup: {
+        from: "tabla3",
+        localField: "_id",
+        foreignField: "relacion_ ObjectId_2",
+        as: "info_relacionada_tabla3"
+      }
+    },
+    {
+      $lookup: {
+        from: "tabla4",
+        localField: "_id",
+        foreignField: "relacion_ ObjectId_3",
+        as: "info_relacionada_tabla4"
+      }
+    },
+     {
+      $project: {
+        campo1:1,
+        campo2:1,
+        campo3: 1,
+        campo4:1,
+        info_relacionada_tabla2:1,
+        info_relacionada_tabla3:1,
+        info_relacionada_tabla4:1
+      }
+    }
+  ]
+)
+*/
