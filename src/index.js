@@ -16,8 +16,7 @@ mongoose.Promise = global.Promise;
 const port = process.env.PORTSERVE;
 const url = process.env.URL;
 
-
-
+// Conexión a la base de datos
 mongoose.connect(process.env.DBSTRING)
 .then(()=>{
     app.listen(port, ()=>{

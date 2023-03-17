@@ -11,8 +11,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const ProgramaSchema = Schema({
-    nombre_programa: String,
+    codigo_programa : String,
+    nombre_programa : String,
+    version_programa : String,
     descripcion_programa : String,
+    estado : { type : Boolean, default: true },                  // Lider de programa
     creado_el: { type : Date, default: Date.now }
 })
 
