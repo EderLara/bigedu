@@ -178,11 +178,11 @@ function loginUser(req, res){
                     // Validación de parametro token:
                     if (params.getToken) {
                         return res.status(200).send({
-                            token : jwt.createToken(user)
+                            access_token : jwt.createToken(user)
                         });
                     } else {
                         // Devuelvo el usuario logueado:
-                        return res.status(200).send({ user });
+                        return res.status(200).send({ user:user });
                     }
                 }
             })
@@ -203,7 +203,7 @@ function UploadImage(req, res){
         let  extSplit = fileName.split('\.');
         let  fileExt = extSplit[1];
 
-           if(fs.existsSync('src/assets/documentos/img/')){
+           if(fs.existsSync('src/assets/img/')){
 
            if(fileExt == 'PNG' || fileExt == 'png' ||  fileExt == 'jpg' || fileExt == 'jpeg' || fileExt == 'gif'){
 

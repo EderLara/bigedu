@@ -1,4 +1,4 @@
-/** 
+/**
  * Aplicación BigEdu
  * @author:
  * @year  :
@@ -21,7 +21,7 @@ exports.ensureAuth = function (req, res, next) {
             mensaje : mensajes.m403
         })
     }
-    // Cabecera sin comillas dobles o simples (usamos replace funciton):
+    // Cabecera sin comillas dobles o simples (usamos replace function):
     let payload;
     let token = req.headers.authorization.replace(/['"]+/g, '')
     token = token.replace('Bearer ', '');
