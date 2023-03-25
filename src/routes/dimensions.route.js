@@ -38,7 +38,7 @@ api.put('/documento/borrar/:id',md_auth.ensureAuth, dimensionControl.DeleteDocum
 /* -------------------------------------------------- */
 
 api.post('/institucion/nuevo',md_auth.ensureAuth, dimensionControl.saveInstitucion);
-api.get('/institucion/todos',md_auth.ensureAuth, dimensionControl.GetListInstitucions);
+api.get('/institucion/todos',dimensionControl.GetListInstitucions);
 api.get('/institucion/buscar/:id',md_auth.ensureAuth, dimensionControl.GetInstitucion);
 api.put('/institucion/actualizar/:id',md_auth.ensureAuth, dimensionControl.UpdateInstitucion);
 api.delete('/institucion/borrar/:id',md_auth.ensureAuth, dimensionControl.DeleteInstituto);

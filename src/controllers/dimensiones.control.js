@@ -312,8 +312,8 @@ function saveInstitucion(req, res) {
   let telefono_coordinador = params.telefono_coordinador;
   let nombre_rector = params.nombre_rector;
   let nombre_coordinador = params.nombre_coordinador;
-  let data = {};
-  data = { nombre_institucion, telefono_ie, nombre_rector, nombre_coordinador };
+  // let data = {};
+  // data = { nombre_institucion, telefono_ie, nombre_rector, nombre_coordinador };
 
   Institucion.findOne({ nombre_institucion: params.nombre_institucion }).exec(
     (error, data) => {

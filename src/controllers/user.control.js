@@ -189,13 +189,9 @@ function loginUser(req, res) {
         if (ok) {
           // Validación de parametro token:
           if (params.getToken) {
-            return res.status(200).send({
-              token: jwt.createToken(user),
+            return res.status(200).send({token: jwt.createToken(user)
             });
-          } else {
-            // Devuelvo el usuario logueado:
-            return res.status(200).send({ user });
-          }
+          }  return res.status(200).send({});
         }
       });
     } else {
@@ -209,11 +205,12 @@ function UploadImage(req, res) {
   let fileName = "No se ha cargado la imagen";
 
   if (req.files) {
-    let filePath = req.files.ImgeUser.path;
+    let filePath = req.files.image.path
+    console.log(filePath);
     let fileSplit = filePath.split("\\");
     console.log(fileSplit);
-    let fileName = fileSplit[4]; // esta variable ya existe, por qué se crea de nuevo?
-    console.log(filename);
+    fileName = fileSplit[4];
+    console.log(fileName);
     let extSplit = fileName.split(".");
     let fileExt = extSplit[1];
 
@@ -227,7 +224,7 @@ function UploadImage(req, res) {
       ) {
         User.findByIdAndUpdate(
           UserId,
-          { DatosUser: { ImgeUser: fileName } },
+          { image: fileName  },
           { new: true },
           (err, userUpdated) => {
             if (err) return res.status(500).send({ mensaje: mensajes.m402 });
@@ -253,6 +250,7 @@ function UploadImage(req, res) {
     }
   }
 }
+
 
 module.exports = {
   testControlUser,

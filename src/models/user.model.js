@@ -13,7 +13,8 @@ const Schema = mongoose.Schema;
 const UsuarioSchema = Schema({
     NickName : String,                                              // Correo Electrónico de ingreso de usuario
     PassUser : String,                                              // Password del usuario
-    EstaUser : String,                                              // Estado del Usuario
+    EstaUser : String, 
+    image: String,                                            // Estado del Usuario
     TipoUser : { type : Schema.ObjectId, ref: 'TipoUsuario' },      // Tipo de Usuario
     Es_Lider : { type : Boolean, default: false },                  // Lider de programa
     DatosUser : {

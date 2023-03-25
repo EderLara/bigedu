@@ -15,7 +15,7 @@ const api = express.Router();
 // Middleware de autenticación:
 const md_auth = require('../middlewares/auth');
 const multiparty = require('connect-multiparty');
-let MiddlewareUploads = multiparty({ uploadDir:'src/assets/documentos/img'});
+let MiddlewareUploads = multiparty({ uploadDir:'src/assets/img'});
 
 // Rutas:
 api.get('/testuser', userControl.testControlUser);

@@ -18,6 +18,8 @@ const institucionSchema = Schema({
     fecha_resolucion : { type : Date },
     codigo_dane : String,
     departamento : String,
+    nombre_rector:String,
+    nombre_coordinador:String,
     municipio : String,
     direccion : String,
     zona_ubicacion: String,
