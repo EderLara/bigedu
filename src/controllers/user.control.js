@@ -19,6 +19,7 @@ const momento = require("moment");
 
 // Servicio de autenticación:
 const jwt = require("../services/jwt");
+const { log } = require("console");
 // const { async } = require('rxjs');
 
 /* ---------------------------------------------------- TEST ---------------------------------------------------- */
@@ -189,7 +190,7 @@ function loginUser(req, res) {
         if (ok) {
           // Validación de parametro token:
           if (params.getToken) {
-            return res.status(200).send({token: jwt.createToken(user)
+            return res.status(200).send({user:user,token: jwt.createToken(user)
             });
           }  return res.status(200).send({});
         }
@@ -245,11 +246,31 @@ function UploadImage(req, res) {
       }
     } else {
       return res.status(200).send({
-        message: {message: "Imagen cargada",fileName},
+        message: {message: "Imagen cargada",fileName,filePath},
       });
     }
   }
 }
+
+
+
+function ShowImages(req, res) {
+  // const type = req.params.type;
+  const image = req.params.image;
+   const pathImage  = path.resolve(__dirname,`../assets/documentos/img/${image}`);
+   console.log(pathImage);
+  
+  // Verificar si el archivo existe y enviarlo como respuesta
+  if (fs.existsSync(pathImage)) {
+    res.sendFile(pathImage);
+  } else {
+    const pathNoImage = path.resolve(__dirname,'../assets/documentos/img/no-image.png');
+    res.sendFile(pathNoImage);
+    res.status(404);
+  }
+}
+
+
 
 
 module.exports = {
@@ -261,4 +282,5 @@ module.exports = {
   loginUser,        // RF5
   changeRol,        // RF6
   UploadImage,      // RF7
+  ShowImages        // RF8
 };

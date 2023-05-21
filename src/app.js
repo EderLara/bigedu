@@ -9,12 +9,16 @@
 const express = require('express');
 const morgan = require('morgan');
 
+
+
 const app = express();
+
+
 // routes:
 const userRoutes = require('./routes/user.route'); 
 const MediaRoutes = require('./routes/mediatecnica.route');
 const dimeRoutes = require('./routes/dimensions.route');
-const fichas = require('./routes/ficha.route')
+const fichas = require('./routes/ficha.route');
 
 
 
@@ -23,6 +27,8 @@ const fichas = require('./routes/ficha.route')
 app.use (express.urlencoded({ extended : false }));
 app.use(express.json());
 app.use(morgan('dev'));
+
+
 
 // cors:
 app.use((req, res, next) =>{
@@ -37,7 +43,7 @@ app.use((req, res, next) =>{
 app.use('/api', userRoutes);
 app.use('/api', dimeRoutes);
 app.use('/api',MediaRoutes);
-app.use('/api',fichas)
+app.use('/api',fichas);
 
 
 // Export Server:

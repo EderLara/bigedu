@@ -26,6 +26,8 @@ api.put('/usuario/rol/:idusuario', md_auth.ensureAuth,userControl.changeRol);
 api.get('/usuario/buscar/:idusuario',md_auth.ensureAuth, userControl.findUser);
 api.get('/usuario/todos',md_auth.ensureAuth, userControl.listUsers);
 api.post('/usuario/image/:id',[MiddlewareUploads,md_auth.ensureAuth],userControl.UploadImage);
+api.get('/image/:image',userControl.ShowImages);
+
 api.post('/correo',mailer.envioCorreo);
 
 module.exports = api;
