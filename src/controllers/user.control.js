@@ -272,6 +272,29 @@ function ShowImages(req, res) {
 
 
 
+function showAllImages(req, res) {
+  const imageDir = path.resolve(__dirname, '../assets/documentos/img');
+  
+  fs.readdir(imageDir, (err, files) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error al obtener las imágenes' });
+      return;
+    }
+
+    const images = files.map(file => {
+      return {
+        fileName: file,
+        filePath: `http://localhost:3100/api/image/${file}`,
+        message :"Imagenes encontradas"
+      };
+    });
+
+    res.json(images);
+  });
+}
+
+
 
 module.exports = {
   testControlUser,
@@ -282,5 +305,6 @@ module.exports = {
   loginUser,        // RF5
   changeRol,        // RF6
   UploadImage,      // RF7
-  ShowImages        // RF8
+  ShowImages,       // RF8
+  showAllImages,    //RF9
 };
