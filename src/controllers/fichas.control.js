@@ -12,7 +12,7 @@ const { mensajes } = require("../util/estados");
 
 //-------------------------Inicio Crud Fichas-------------------------------------------------------//
 
-function saveFicha(req, res) {
+function SaveFicha(req, res) {
     const ficha = new Ficha();
     let params = req.body;
     let numero_ficha = params.numero_ficha;
@@ -48,6 +48,25 @@ function saveFicha(req, res) {
 }
 
 
+ function GetFichas(req,res){
+    Ficha.find((err, TodasFichas) => {
+        if (err) throw err;
+        if (!TodasFichas) {
+          return res.status(404).send({ mensaje: mensajes.m404 });
+        }
+        return res.status(200).send({ mensaje: mensajes.m200, TodasFichas });
+      });
+    
+    
+}
+
+
+
+
+
+
+
 module.exports = {
-    saveFicha,
+    SaveFicha,
+    GetFichas,
 }

@@ -18,7 +18,8 @@ const md_auth = require('../middlewares/auth');
 
 
 // Rutas:
-api.post('/fichas/nuevo',fichasControl.saveFicha);
+api.post('/fichas/nuevo',fichasControl.SaveFicha);
+api.get('/fichas/Todas',fichasControl.GetFichas)
 
 
 
