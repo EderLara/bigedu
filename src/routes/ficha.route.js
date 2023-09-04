@@ -21,7 +21,7 @@ const md_auth = require('../middlewares/auth');
 api.post('/fichas/nuevo',fichasControl.SaveFicha);
 api.get('/fichas/Todas',fichasControl.GetFichas);
 api.get('/fichas/buscar/:id',fichasControl.GetFicha);
-
+api.put('/fichas/actualizar/:id',fichasControl.updateFicha);
 api.delete('/fichas/borrar/:id',fichasControl.DeleteFicha);
 
 

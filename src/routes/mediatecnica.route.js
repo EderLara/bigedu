@@ -19,6 +19,7 @@ const md_auth = require('../middlewares/auth');
 
 // Rutas:
 api.post('/mediatecnica/nuevo',mediaTecnicaControl.saveMediatecnica);
+api.get('/mediatecnica/todas',mediaTecnicaControl.GetListMediaTec);
 
 
 

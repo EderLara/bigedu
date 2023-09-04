@@ -33,7 +33,25 @@ function saveMediatecnica(req,res){
 
 
 
+function GetListMediaTec(req,res){
+  Media.find((err,TodosMediaTec) =>{
+    if(err) throw err;
+    if (!TodosMediaTec) {
+      return res.status(404).send({ mensaje: mensajes.m404 });
+    }
+    return res
+      .status(200)
+      .send({ mensaje: mensajes.m200, programas: TodosMediaTec });
+
+  });
+
+
+}    
+
+
+
 
 module.exports = {
     saveMediatecnica,
+    GetListMediaTec,
 }

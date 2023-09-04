@@ -72,7 +72,22 @@ function GetFicha(req,res){
 
 
 
-//update ficha    
+function updateFicha(req, res) {
+  let ficha_id = req.params.id;
+  let ficha = req.body;
+
+  Ficha.findByIdAndUpdate( ficha_id, ficha,{ new: true },
+    (error, FichaUpdate) => {
+      if (error) throw error;
+      if (!FichaUpdate) {
+        return res.status(404).send({ mensaje: mensajes.m404 });
+      }
+      return res.status(200).send({ mensaje: mensajes.m200, FichaUpdate });
+    }
+  );
+}    
+
+
 
 //toma el id de la ficha lo busca en mongo y lo remueve
 function DeleteFicha(req,res){
@@ -89,13 +104,10 @@ function DeleteFicha(req,res){
 
 
 
-
-
-
-
 module.exports = {
     SaveFicha,
     GetFichas,
     GetFicha,
+    updateFicha,
     DeleteFicha,
 }
