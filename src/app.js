@@ -19,7 +19,7 @@ const userRoutes = require('./routes/user.route');
 const MediaRoutes = require('./routes/mediatecnica.route');
 const dimeRoutes = require('./routes/dimensions.route');
 const fichas = require('./routes/ficha.route');
-
+const documentosRoutes = require('./routes/documentos.route');
 
 
 
@@ -44,7 +44,7 @@ app.use('/api', userRoutes);
 app.use('/api', dimeRoutes);
 app.use('/api',MediaRoutes);
 app.use('/api',fichas);
-
+app.use('/api',documentosRoutes);
 
 // Export Server:
 module.exports = app;
