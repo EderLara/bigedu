@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-exports.upload = upload.single('myFile');//para cargar un archivo
+exports.upload = upload.single('myFile');//para cargar un solo archivo
 //funcion que controla la carga del archivo
 exports.uploadFile = (req, res) => {
   if (!req.file) {

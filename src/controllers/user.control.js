@@ -175,31 +175,43 @@ function loginUser(req, res) {
   let params = req.body;
   let nickname = params.nickname;
   let passuser = params.passuser;
-  console.log(params);
 
   // Query para login:
-  User.findOne({ NickName: nickname }, (err, user) => {
-    console.log(user);
-    if (err) throw err;
-    if (user) {
-      // Encripto el pass del formulario:
-      bcrypt.compare(passuser, user.PassUser, (err, ok) => {
-        //console.log(ok);
-        if (err) throw err;
+  User.findOne({ NickName: nickname })
+    .populate('TipoUser') // Esto carga la referencia al tipo de usuario
+    .exec((err, user) => {
+      if (err) throw err;
+      if (user) {
+        // Encripto el pass del formulario:
+        bcrypt.compare(passuser, user.PassUser, (err, ok) => {
+          if (err) throw err;
 
-        if (ok) {
-          // Validación de parametro token:
-          if (params.getToken) {
-            return res.status(200).send({user:user,token: jwt.createToken(user)
+          if (ok) {
+            // El usuario ha iniciado sesión correctamente.
+            // Ahora puedes acceder al tipo de usuario.
+            const userType = user.TipoUser.nombre_tipoUsuario;
+
+            // Validación de parámetro token:
+            if (params.getToken) {
+              return res.status(200).send({
+                user: user,
+                userType: userType, // Agregar el tipo de usuario a la respuesta
+                token: jwt.createToken(user),
+              });
+            }
+            return res.status(200).send({
+              user: user,
+              userType: userType, // Agregar el tipo de usuario a la respuesta
             });
-          }  return res.status(200).send({});
-        }
-      });
-    } else {
-      return res.status(404).send({ mensaje: mensajes.m404 });
-    }
-  });
+          }gi
+        });
+      } else {
+        return res.status(404).send({ mensaje: mensajes.m404 });
+      }
+    });
 }
+
+
 
 function UploadImage(req, res) {
   let UserId = req.params.id;
