@@ -188,7 +188,6 @@ function loginUser(req, res) {
 
           if (ok) {
             // El usuario ha iniciado sesión correctamente.
-            // Ahora puedes acceder al tipo de usuario.
             const userType = user.TipoUser.nombre_tipoUsuario;
 
             // Validación de parámetro token:
